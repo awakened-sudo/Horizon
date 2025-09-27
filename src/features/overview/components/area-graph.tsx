@@ -19,25 +19,29 @@ import {
 } from '@/components/ui/chart';
 
 const chartData = [
-  { month: 'January', desktop: 186, mobile: 80 },
-  { month: 'February', desktop: 305, mobile: 200 },
-  { month: 'March', desktop: 237, mobile: 120 },
-  { month: 'April', desktop: 73, mobile: 190 },
-  { month: 'May', desktop: 209, mobile: 130 },
-  { month: 'June', desktop: 214, mobile: 140 }
+  { month: 'January', netWorth: 98500, assets: 152000, liabilities: 53500 },
+  { month: 'February', netWorth: 102300, assets: 156800, liabilities: 54500 },
+  { month: 'March', netWorth: 105200, assets: 160200, liabilities: 55000 },
+  { month: 'April', netWorth: 108900, assets: 164400, liabilities: 55500 },
+  { month: 'May', netWorth: 112800, assets: 169300, liabilities: 56500 },
+  { month: 'June', netWorth: 116200, assets: 173700, liabilities: 57500 },
+  { month: 'July', netWorth: 119500, assets: 177200, liabilities: 57700 },
+  { month: 'August', netWorth: 122100, assets: 180800, liabilities: 58700 },
+  { month: 'September', netWorth: 125450, assets: 185200, liabilities: 59750 }
 ];
 
 const chartConfig = {
-  visitors: {
-    label: 'Visitors'
+  netWorth: {
+    label: 'Net Worth',
+    color: 'hsl(var(--chart-1))'
   },
-  desktop: {
-    label: 'Desktop',
-    color: 'var(--primary)'
+  assets: {
+    label: 'Assets',
+    color: 'hsl(var(--chart-2))'
   },
-  mobile: {
-    label: 'Mobile',
-    color: 'var(--primary)'
+  liabilities: {
+    label: 'Liabilities',
+    color: 'hsl(var(--chart-3))'
   }
 } satisfies ChartConfig;
 
@@ -45,9 +49,9 @@ export function AreaGraph() {
   return (
     <Card className='@container/card'>
       <CardHeader>
-        <CardTitle>Area Chart - Stacked</CardTitle>
+        <CardTitle>Net Worth Trend</CardTitle>
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Net worth growth over the past 9 months
         </CardDescription>
       </CardHeader>
       <CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
@@ -63,27 +67,15 @@ export function AreaGraph() {
             }}
           >
             <defs>
-              <linearGradient id='fillDesktop' x1='0' y1='0' x2='0' y2='1'>
+              <linearGradient id='fillNetWorth' x1='0' y1='0' x2='0' y2='1'>
                 <stop
                   offset='5%'
-                  stopColor='var(--color-desktop)'
-                  stopOpacity={1.0}
-                />
-                <stop
-                  offset='95%'
-                  stopColor='var(--color-desktop)'
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id='fillMobile' x1='0' y1='0' x2='0' y2='1'>
-                <stop
-                  offset='5%'
-                  stopColor='var(--color-mobile)'
+                  stopColor='var(--color-netWorth)'
                   stopOpacity={0.8}
                 />
                 <stop
                   offset='95%'
-                  stopColor='var(--color-mobile)'
+                  stopColor='var(--color-netWorth)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
@@ -102,18 +94,10 @@ export function AreaGraph() {
               content={<ChartTooltipContent indicator='dot' />}
             />
             <Area
-              dataKey='mobile'
+              dataKey='netWorth'
               type='natural'
-              fill='url(#fillMobile)'
-              stroke='var(--color-mobile)'
-              stackId='a'
-            />
-            <Area
-              dataKey='desktop'
-              type='natural'
-              fill='url(#fillDesktop)'
-              stroke='var(--color-desktop)'
-              stackId='a'
+              fill='url(#fillNetWorth)'
+              stroke='var(--color-netWorth)'
             />
           </AreaChart>
         </ChartContainer>
@@ -122,11 +106,11 @@ export function AreaGraph() {
         <div className='flex w-full items-start gap-2 text-sm'>
           <div className='grid gap-2'>
             <div className='flex items-center gap-2 leading-none font-medium'>
-              Trending up by 5.2% this month{' '}
+              Net worth increased by 27.4% this year{' '}
               <IconTrendingUp className='h-4 w-4' />
             </div>
             <div className='text-muted-foreground flex items-center gap-2 leading-none'>
-              January - June 2024
+              January - September 2024
             </div>
           </div>
         </div>

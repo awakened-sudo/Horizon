@@ -11,6 +11,21 @@ export type Product = {
   updated_at: string;
 };
 
+export type Investment = {
+  id: number;
+  symbol: string;
+  name: string;
+  type: string;
+  quantity: number;
+  purchase_price: number;
+  current_price: number;
+  market_value: number;
+  gain_loss: number;
+  gain_loss_percentage: number;
+  purchase_date: string;
+  updated_at: string;
+};
+
 //Info: The following data is used for the sidebar navigation and Cmd K bar.
 export const navItems: NavItem[] = [
   {
@@ -22,7 +37,7 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Product',
+    title: 'Portfolio',
     url: '/dashboard/product',
     icon: 'product',
     shortcut: ['p', 'p'],
@@ -51,10 +66,10 @@ export const navItems: NavItem[] = [
     ]
   },
   {
-    title: 'Kanban',
+    title: 'Financial Goals',
     url: '/dashboard/kanban',
     icon: 'kanban',
-    shortcut: ['k', 'k'],
+    shortcut: ['g', 'g'],
     isActive: false,
     items: [] // No child items
   }

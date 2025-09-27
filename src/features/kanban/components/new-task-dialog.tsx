@@ -33,14 +33,14 @@ export default function NewTaskDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant='secondary' size='sm'>
-          ＋ Add New Todo
+          ＋ Add Financial Goal
         </Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Add New Todo</DialogTitle>
+          <DialogTitle>Add Financial Goal</DialogTitle>
           <DialogDescription>
-            What do you want to get done today?
+            Set a new financial objective to track your progress.
           </DialogDescription>
         </DialogHeader>
         <form
@@ -52,7 +52,7 @@ export default function NewTaskDialog() {
             <Input
               id='title'
               name='title'
-              placeholder='Todo title...'
+              placeholder='Goal title (e.g., Emergency Fund - $10,000)...'
               className='col-span-4'
             />
           </div>
@@ -60,7 +60,7 @@ export default function NewTaskDialog() {
             <Textarea
               id='description'
               name='description'
-              placeholder='Description...'
+              placeholder='Goal description and details...'
               className='col-span-4'
             />
           </div>
@@ -68,7 +68,7 @@ export default function NewTaskDialog() {
         <DialogFooter>
           <DialogTrigger asChild>
             <Button type='submit' size='sm' form='todo-form'>
-              Add Todo
+              Add Goal
             </Button>
           </DialogTrigger>
         </DialogFooter>

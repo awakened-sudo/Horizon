@@ -3,8 +3,8 @@ import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
-import ProductListingPage from '@/features/products/components/product-listing';
-import { searchParamsCache, serialize } from '@/lib/searchparams';
+import InvestmentListingPage from '@/features/products/components/investment-listing';
+import { searchParamsCache } from '@/lib/searchparams';
 import { cn } from '@/lib/utils';
 import { IconPlus } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Dashboard: Products'
+  title: 'Dashboard: Portfolio'
 };
 
 type pageProps = {
@@ -32,14 +32,14 @@ export default async function Page(props: pageProps) {
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading
-            title='Products'
-            description='Manage products (Server side table functionalities.)'
+            title='Portfolio & Investments'
+            description='Track and manage your investment portfolio and assets.'
           />
           <Link
             href='/dashboard/product/new'
             className={cn(buttonVariants(), 'text-xs md:text-sm')}
           >
-            <IconPlus className='mr-2 h-4 w-4' /> Add New
+            <IconPlus className='mr-2 h-4 w-4' /> Add Investment
           </Link>
         </div>
         <Separator />
@@ -49,7 +49,7 @@ export default async function Page(props: pageProps) {
             <DataTableSkeleton columnCount={5} rowCount={8} filterCount={2} />
           }
         >
-          <ProductListingPage />
+          <InvestmentListingPage />
         </Suspense>
       </div>
     </PageContainer>
