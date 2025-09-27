@@ -72,6 +72,14 @@ export const navItems: NavItem[] = [
     shortcut: ['g', 'g'],
     isActive: false,
     items: [] // No child items
+  },
+  {
+    title: 'Data Analysis',
+    url: '/dashboard/data-analysis',
+    icon: 'billing',
+    shortcut: ['a', 'a'],
+    isActive: false,
+    items: [] // No child items
   }
 ];
 
