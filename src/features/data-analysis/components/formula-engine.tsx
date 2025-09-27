@@ -99,18 +99,17 @@ export function FormulaEngine() {
   }
 
   return (
-    <div className='space-y-6'>
-      {/* Formula Input */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Formula Calculator</CardTitle>
-          <CardDescription>
-            Execute formulas on your data columns. Supports SUM, AVG, COUNT,
-            MAX, MIN functions.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+    <div className='flex flex-1 flex-col space-y-6'>
+      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+        {/* Formula Input */}
+        <Card className='@container/formula-input'>
+          <CardHeader>
+            <CardTitle>Formula Calculator</CardTitle>
+            <CardDescription>
+              Execute Excel-like formulas on your data
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-4'>
             <div className='space-y-2'>
               <Label htmlFor='formula-input'>Formula</Label>
               <div className='flex space-x-2'>
@@ -147,119 +146,80 @@ export function FormulaEngine() {
                 </SelectContent>
               </Select>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Formula Examples */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Formula Examples</CardTitle>
-          <CardDescription>
-            Click to copy these example formulas
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-            {FORMULA_EXAMPLES.map((example) => (
-              <div
-                key={example.name}
-                className='space-y-2 rounded-lg border p-4'
-              >
-                <div className='flex items-center justify-between'>
-                  <Badge variant='outline'>{example.name}</Badge>
-                  <Button
-                    variant='ghost'
-                    size='sm'
-                    onClick={() => copyFormula(example.formula)}
-                  >
-                    <IconCopy className='h-4 w-4' />
-                  </Button>
-                </div>
-                <code className='bg-muted block rounded p-2 text-sm'>
-                  {example.formula}
-                </code>
-                <p className='text-muted-foreground text-xs'>
-                  {example.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Available Columns */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Available Columns</CardTitle>
-          <CardDescription>
-            Use these column names in your formulas
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='flex flex-wrap gap-2'>
-            {headers.map((header) => {
-              const sampleValues = data.slice(0, 5).map((row) => row[header]);
-              const isNumeric = sampleValues.some(
-                (val) => typeof val === 'number'
-              );
-
-              return (
-                <Badge
-                  key={header}
-                  variant={isNumeric ? 'default' : 'secondary'}
-                  className='cursor-pointer'
-                  onClick={() => setCurrentFormula((prev) => prev + header)}
+        {/* Formula Examples */}
+        <Card className='@container/formula-examples'>
+          <CardHeader>
+            <CardTitle>Formula Examples</CardTitle>
+            <CardDescription>
+              Click to copy these example formulas
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className='grid grid-cols-1 gap-3 @[300px]/formula-examples:grid-cols-2'>
+              {FORMULA_EXAMPLES.map((example) => (
+                <div
+                  key={example.name}
+                  className='space-y-2 rounded-lg border p-3'
                 >
-                  {header}
-                  {isNumeric && <span className='ml-1 text-xs'>(#)</span>}
-                </Badge>
-              );
-            })}
-          </div>
-          <p className='text-muted-foreground mt-2 text-xs'>
-            Columns marked with (#) contain numeric data and work with
-            mathematical functions.
-          </p>
-        </CardContent>
-      </Card>
+                  <div className='flex items-center justify-between'>
+                    <Badge variant='outline'>{example.name}</Badge>
+                    <Button
+                      variant='ghost'
+                      size='sm'
+                      onClick={() => copyFormula(example.formula)}
+                    >
+                      <IconCopy className='h-3 w-3' />
+                    </Button>
+                  </div>
+                  <code className='bg-muted block rounded px-2 py-1 text-sm'>
+                    {example.formula}
+                  </code>
+                  <p className='text-muted-foreground text-xs'>
+                    {example.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Formula Results */}
       {formulas.length > 0 && (
-        <Card>
+        <Card className='@container/formula-results'>
           <CardHeader>
-            <CardTitle>Formula Results</CardTitle>
+            <CardTitle>Formula Results ({formulas.length})</CardTitle>
             <CardDescription>Your calculated results</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className='space-y-4'>
+            <div className='grid grid-cols-1 gap-4 @[600px]/formula-results:grid-cols-2'>
               {formulas.map((formula) => (
                 <div
                   key={formula.id}
                   className='flex items-center justify-between rounded-lg border p-4'
                 >
-                  <div className='space-y-1'>
+                  <div className='min-w-0 flex-1 space-y-1'>
                     <div className='flex items-center space-x-2'>
-                      <code className='bg-muted rounded px-2 py-1 text-sm'>
+                      <code className='bg-muted truncate rounded px-2 py-1 text-sm'>
                         {formula.formula}
                       </code>
                       {formula.column && (
-                        <Badge variant='outline' className='text-xs'>
+                        <Badge
+                          variant='secondary'
+                          className='flex-shrink-0 text-xs'
+                        >
                           {formula.column}
                         </Badge>
                       )}
                     </div>
-                    <div className='text-2xl font-bold'>
-                      {formula.error ? (
-                        <span className='text-destructive text-sm'>
-                          {formula.error}
-                        </span>
-                      ) : (
-                        formatResult(formula.result)
-                      )}
+                    <div className='text-primary text-2xl font-bold'>
+                      {formatResult(formula.result)}
                     </div>
                   </div>
-                  <div className='flex items-center space-x-2'>
+                  <div className='flex flex-shrink-0 items-center space-x-2'>
                     <Button
                       variant='ghost'
                       size='sm'
@@ -281,64 +241,6 @@ export function FormulaEngine() {
           </CardContent>
         </Card>
       )}
-
-      {/* Formula Documentation */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Supported Functions</CardTitle>
-          <CardDescription>
-            Complete list of available formula functions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className='space-y-4'>
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-              <div className='space-y-2'>
-                <h4 className='font-semibold'>Mathematical Functions</h4>
-                <ul className='text-muted-foreground space-y-1 text-sm'>
-                  <li>
-                    <code>SUM(column)</code> - Sum all numeric values
-                  </li>
-                  <li>
-                    <code>AVG(column)</code> - Calculate average
-                  </li>
-                  <li>
-                    <code>MAX(column)</code> - Find maximum value
-                  </li>
-                  <li>
-                    <code>MIN(column)</code> - Find minimum value
-                  </li>
-                </ul>
-              </div>
-
-              <div className='space-y-2'>
-                <h4 className='font-semibold'>Statistical Functions</h4>
-                <ul className='text-muted-foreground space-y-1 text-sm'>
-                  <li>
-                    <code>COUNT(column)</code> - Count non-empty values
-                  </li>
-                  <li>More functions coming soon...</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className='bg-muted rounded-lg p-4'>
-              <h4 className='mb-2 font-semibold'>Usage Tips</h4>
-              <ul className='text-muted-foreground space-y-1 text-sm'>
-                <li>• Column names are case-sensitive</li>
-                <li>
-                  • Use exact column names as shown in the Available Columns
-                  section
-                </li>
-                <li>• Functions work best with numeric columns</li>
-                <li>
-                  • Results are calculated based on the current filtered data
-                </li>
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

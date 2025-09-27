@@ -11,8 +11,13 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { IconUpload, IconFile, IconX, IconCheck } from '@tabler/icons-react';
+import {
+  IconUpload,
+  IconFile,
+  IconCheck,
+  IconX,
+  IconLoader2
+} from '@tabler/icons-react';
 import { useDataAnalysisStore } from '../utils/store';
 
 interface UploadedFile {
@@ -247,65 +252,89 @@ export function CSVUploader() {
   };
 
   return (
-    <div className='space-y-6'>
-      <Card>
-        <CardHeader>
-          <CardTitle>Upload CSV Files</CardTitle>
-          <CardDescription>
-            Upload your financial data in CSV format for analysis and
-            visualization
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          <div
-            {...getRootProps()}
-            className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
-              isDragActive
-                ? 'border-primary bg-primary/5'
-                : 'border-muted-foreground/25 hover:border-primary/50'
-            }`}
-          >
-            <input {...getInputProps()} />
-            <IconUpload className='text-muted-foreground mx-auto mb-4 h-12 w-12' />
-            {isDragActive ? (
-              <p className='text-lg font-medium'>Drop the files here...</p>
-            ) : (
-              <div>
-                <p className='mb-2 text-lg font-medium'>
-                  Drag & drop CSV files here, or click to select
-                </p>
-                <p className='text-muted-foreground text-sm'>
-                  Supports CSV, XLS, and XLSX files
-                </p>
-              </div>
-            )}
-          </div>
+    <div className='flex flex-1 flex-col space-y-6'>
+      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
+        <Card className='@container/upload'>
+          <CardHeader>
+            <CardTitle>Upload CSV Files</CardTitle>
+            <CardDescription>
+              Upload your financial data in CSV format for analysis and
+              visualization
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div
+              {...getRootProps()}
+              className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
+                isDragActive
+                  ? 'border-primary bg-primary/5'
+                  : 'border-muted-foreground/25 hover:border-primary/50'
+              }`}
+            >
+              <input {...getInputProps()} />
+              <IconUpload className='text-muted-foreground mx-auto mb-4 h-12 w-12' />
+              {isDragActive ? (
+                <p className='text-lg font-medium'>Drop the files here...</p>
+              ) : (
+                <div>
+                  <p className='mb-2 text-lg font-medium'>
+                    Drag & drop CSV files here, or click to select
+                  </p>
+                  <p className='text-muted-foreground text-sm'>
+                    Supports CSV, XLS, and XLSX files
+                  </p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
-          <div className='flex justify-center'>
-            <Button variant='outline' onClick={loadSampleData}>
+        <Card className='@container/sample'>
+          <CardHeader>
+            <CardTitle>Quick Start</CardTitle>
+            <CardDescription>
+              Try the platform with sample financial data
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='flex flex-col items-center justify-center space-y-4 py-8'>
+            <div className='space-y-2 text-center'>
+              <div className='text-4xl'>📊</div>
+              <h3 className='font-semibold'>Sample Dataset</h3>
+              <p className='text-muted-foreground text-sm'>
+                Load pre-configured financial data to explore all features
+              </p>
+            </div>
+            <Button
+              variant='outline'
+              onClick={loadSampleData}
+              className='w-full @[200px]/sample:w-auto'
+            >
               Load Sample Financial Data
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {uploadedFiles.length > 0 && (
-        <Card>
+        <Card className='@container/files'>
           <CardHeader>
-            <CardTitle>Uploaded Files</CardTitle>
+            <CardTitle>Uploaded Files ({uploadedFiles.length})</CardTitle>
+            <CardDescription>Manage your uploaded datasets</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className='space-y-4'>
+            <div className='grid grid-cols-1 gap-4 @[600px]/files:grid-cols-2'>
               {uploadedFiles.map((fileObj) => (
                 <div
                   key={fileObj.id}
                   className='flex items-center space-x-4 rounded-lg border p-4'
                 >
-                  <IconFile className='text-muted-foreground h-8 w-8' />
-                  <div className='flex-1 space-y-2'>
+                  <IconFile className='text-muted-foreground h-8 w-8 flex-shrink-0' />
+                  <div className='min-w-0 flex-1 space-y-2'>
                     <div className='flex items-center justify-between'>
-                      <span className='font-medium'>{fileObj.file.name}</span>
-                      <div className='flex items-center space-x-2'>
+                      <span className='truncate font-medium'>
+                        {fileObj.file.name}
+                      </span>
+                      <div className='flex flex-shrink-0 items-center space-x-2'>
                         <Badge
                           variant={
                             fileObj.status === 'completed'
@@ -314,9 +343,16 @@ export function CSVUploader() {
                                 ? 'destructive'
                                 : 'secondary'
                           }
+                          className='ml-2'
                         >
                           {fileObj.status === 'completed' && (
                             <IconCheck className='mr-1 h-3 w-3' />
+                          )}
+                          {fileObj.status === 'uploading' && (
+                            <IconLoader2 className='mr-1 h-3 w-3 animate-spin' />
+                          )}
+                          {fileObj.status === 'error' && (
+                            <IconX className='mr-1 h-3 w-3' />
                           )}
                           {fileObj.status}
                         </Badge>
@@ -324,14 +360,20 @@ export function CSVUploader() {
                           variant='ghost'
                           size='sm'
                           onClick={() => removeFile(fileObj.id)}
+                          title='Remove file'
                         >
                           <IconX className='h-4 w-4' />
                         </Button>
                       </div>
                     </div>
 
-                    {fileObj.status !== 'completed' && (
-                      <Progress value={fileObj.progress} className='h-2' />
+                    {fileObj.status === 'uploading' && (
+                      <div className='bg-secondary h-2 w-full rounded-full'>
+                        <div
+                          className='bg-primary h-2 rounded-full transition-all'
+                          style={{ width: `${fileObj.progress}%` }}
+                        />
+                      </div>
                     )}
 
                     {fileObj.status === 'completed' && fileObj.data && (

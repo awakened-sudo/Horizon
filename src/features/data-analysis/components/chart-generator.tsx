@@ -252,120 +252,156 @@ export function ChartGenerator() {
   }
 
   return (
-    <div className='space-y-6'>
-      {/* Chart Creation Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Create New Chart</CardTitle>
-          <CardDescription>
-            Generate visualizations from your data
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-4'>
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-            <div className='space-y-2'>
-              <Label htmlFor='chart-title'>Chart Title</Label>
-              <Input
-                id='chart-title'
-                placeholder='Enter chart title...'
-                value={newChart.title || ''}
-                onChange={(e) =>
-                  setNewChart((prev) => ({ ...prev, title: e.target.value }))
-                }
-              />
-            </div>
+    <div className='flex flex-1 flex-col space-y-6'>
+      <div className='grid grid-cols-1 gap-6 xl:grid-cols-3'>
+        {/* Chart Creation Form */}
+        <Card className='@container/chart-form xl:col-span-1'>
+          <CardHeader>
+            <CardTitle>Create New Chart</CardTitle>
+            <CardDescription>
+              Generate visualizations from your data
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className='space-y-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='chart-title'>Chart Title</Label>
+                <Input
+                  id='chart-title'
+                  placeholder='Enter chart title...'
+                  value={newChart.title || ''}
+                  onChange={(e) =>
+                    setNewChart((prev) => ({ ...prev, title: e.target.value }))
+                  }
+                />
+              </div>
 
-            <div className='space-y-2'>
-              <Label htmlFor='chart-type'>Chart Type</Label>
-              <Select
-                value={newChart.type}
-                onValueChange={(value) =>
-                  setNewChart((prev) => ({
-                    ...prev,
-                    type: value as ChartConfig['type']
-                  }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder='Select chart type' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value='line'>Line Chart</SelectItem>
-                  <SelectItem value='bar'>Bar Chart</SelectItem>
-                  <SelectItem value='area'>Area Chart</SelectItem>
-                  <SelectItem value='pie'>Pie Chart</SelectItem>
-                  <SelectItem value='scatter'>Scatter Plot</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-            <div className='space-y-2'>
-              <Label htmlFor='x-axis'>X-Axis Column</Label>
-              <Select
-                value={newChart.xAxis}
-                onValueChange={(value) =>
-                  setNewChart((prev) => ({ ...prev, xAxis: value }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder='Select X-axis column' />
-                </SelectTrigger>
-                <SelectContent>
-                  {headers.map((header) => (
-                    <SelectItem key={header} value={header}>
-                      {header}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className='space-y-2'>
-              <Label>Y-Axis Columns</Label>
-              <div className='max-h-32 overflow-y-auto rounded-md border p-3'>
-                {numericHeaders.map((header) => (
-                  <div
-                    key={header}
-                    className='flex items-center space-x-2 py-1'
-                  >
-                    <Checkbox
-                      id={`y-${header}`}
-                      checked={newChart.yAxis?.includes(header) || false}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setNewChart((prev) => ({
-                            ...prev,
-                            yAxis: [...(prev.yAxis || []), header]
-                          }));
-                        } else {
-                          setNewChart((prev) => ({
-                            ...prev,
-                            yAxis: (prev.yAxis || []).filter(
-                              (col) => col !== header
-                            )
-                          }));
-                        }
-                      }}
-                    />
-                    <Label htmlFor={`y-${header}`} className='text-sm'>
-                      {header}
-                    </Label>
-                  </div>
-                ))}
+              <div className='space-y-2'>
+                <Label htmlFor='chart-type'>Chart Type</Label>
+                <Select
+                  value={newChart.type}
+                  onValueChange={(value) =>
+                    setNewChart((prev) => ({
+                      ...prev,
+                      type: value as ChartConfig['type']
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select chart type' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='line'>Line Chart</SelectItem>
+                    <SelectItem value='bar'>Bar Chart</SelectItem>
+                    <SelectItem value='area'>Area Chart</SelectItem>
+                    <SelectItem value='pie'>Pie Chart</SelectItem>
+                    <SelectItem value='scatter'>Scatter Plot</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          </div>
 
-          <Button onClick={createChart} className='w-full'>
-            <IconPlus className='mr-2 h-4 w-4' />
-            Create Chart
-          </Button>
-        </CardContent>
-      </Card>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div className='space-y-2'>
+                <Label htmlFor='x-axis'>X-Axis Column</Label>
+                <Select
+                  value={newChart.xAxis}
+                  onValueChange={(value) =>
+                    setNewChart((prev) => ({ ...prev, xAxis: value }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder='Select X-axis column' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {headers.map((header) => (
+                      <SelectItem key={header} value={header}>
+                        {header}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-      {/* Chart List */}
+              <div className='space-y-2'>
+                <Label>Y-Axis Columns</Label>
+                <div className='max-h-32 overflow-y-auto rounded-md border p-3'>
+                  {numericHeaders.map((header) => (
+                    <div
+                      key={header}
+                      className='flex items-center space-x-2 py-1'
+                    >
+                      <Checkbox
+                        id={`y-${header}`}
+                        checked={newChart.yAxis?.includes(header) || false}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setNewChart((prev) => ({
+                              ...prev,
+                              yAxis: [...(prev.yAxis || []), header]
+                            }));
+                          } else {
+                            setNewChart((prev) => ({
+                              ...prev,
+                              yAxis: (prev.yAxis || []).filter(
+                                (col) => col !== header
+                              )
+                            }));
+                          }
+                        }}
+                      />
+                      <Label htmlFor={`y-${header}`} className='text-sm'>
+                        {header}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <Button onClick={createChart} className='w-full'>
+              <IconPlus className='mr-2 h-4 w-4' />
+              Create Chart
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Chart Preview */}
+        <div className='xl:col-span-2'>
+          {activeChart && charts.find((c) => c.id === activeChart) ? (
+            <Card className='@container/chart-preview h-full'>
+              <CardHeader>
+                <CardTitle>
+                  {charts.find((c) => c.id === activeChart)?.title}
+                </CardTitle>
+                <CardDescription>Interactive chart preview</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className='h-96 @[400px]/chart-preview:h-[500px]'>
+                  <ResponsiveContainer width='100%' height='100%'>
+                    {renderChart(charts.find((c) => c.id === activeChart)!)}
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className='@container/chart-preview h-full'>
+              <CardContent className='flex h-full flex-col items-center justify-center py-12'>
+                <div className='space-y-4 text-center'>
+                  <div className='text-6xl'>📊</div>
+                  <h3 className='text-lg font-semibold'>No Chart Selected</h3>
+                  <p className='text-muted-foreground'>
+                    Create a chart or select one from your saved charts to view
+                    it here.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+
+      {/* Chart Management */}
       {charts.length > 0 && (
         <Card>
           <CardHeader>
