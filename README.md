@@ -33,7 +33,7 @@ This is a starter template using the following stack:
 - Formatting - [Prettier](https://prettier.io)
 
 _If you are looking for a React admin dashboard starter, here is the [repo](https://github.com/Kiranism/react-shadcn-dashboard-starter)._
-
+<!-- 
 ## Pages
 
 | Pages                                                                                 | Specifications                                                                                                                                                                                                                                                          |
@@ -45,7 +45,7 @@ _If you are looking for a React admin dashboard starter, here is the [repo](http
 | [Profile](https://shadcn-dashboard.kiranism.dev/dashboard/profile)         | Clerk's full-featured account management UI that allows users to manage their profile and security settings                                                                                                                                                             |
 | [Kanban Board](https://shadcn-dashboard.kiranism.dev/dashboard/kanban)     | A Drag n Drop task management board with dnd-kit and zustand to persist state locally.                                                                                                                                                                                  |
 | [Not Found](https://shadcn-dashboard.kiranism.dev/dashboard/notfound)      | Not Found Page Added in the root level                                                                                                                                                                                                                                  |
-| Global Error           | A centralized error page that captures and displays errors across the application. Integrated with **Sentry** to log errors, provide detailed reports, and enable replay functionality for better debugging. This page enhances user experience by providing a friendly error message and options to navigate back to safety. |
+| Global Error           | A centralized error page that captures and displays errors across the application. Integrated with **Sentry** to log errors, provide detailed reports, and enable replay functionality for better debugging. This page enhances user experience by providing a friendly error message and options to navigate back to safety. | -->
 
 ## Feature based organization
 
@@ -94,7 +94,7 @@ src/
 Clone the repo:
 
 ```
-git clone https://github.com/Kiranism/next-shadcn-dashboard-starter.git
+git clone https://github.com/Awakened-Sudo/horizon.git
 ```
 
 - `pnpm install` ( we have legacy-peer-deps=true added in the .npmrc)
