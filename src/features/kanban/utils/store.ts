@@ -4,12 +4,20 @@ import { persist } from 'zustand/middleware';
 import { UniqueIdentifier } from '@dnd-kit/core';
 import { Column } from '../components/board-column';
 
-export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE';
+export type Status = 'PLANNING' | 'IN_PROGRESS' | 'ACHIEVED';
 
 const defaultCols = [
   {
-    id: 'TODO' as const,
-    title: 'Todo'
+    id: 'PLANNING' as const,
+    title: 'Planning'
+  },
+  {
+    id: 'IN_PROGRESS' as const,
+    title: 'In Progress'
+  },
+  {
+    id: 'ACHIEVED' as const,
+    title: 'Achieved'
   }
 ] satisfies Column[];
 
@@ -20,6 +28,10 @@ export type Task = {
   title: string;
   description?: string;
   status: Status;
+  targetAmount?: number;
+  currentAmount?: number;
+  targetDate?: string;
+  category?: string;
 };
 
 export type State = {
@@ -30,14 +42,34 @@ export type State = {
 
 const initialTasks: Task[] = [
   {
-    id: 'task1',
-    status: 'TODO',
-    title: 'Project initiation and planning'
+    id: 'goal1',
+    status: 'PLANNING',
+    title: 'Emergency Fund - $10,000',
+    description: 'Build emergency fund to cover 6 months of expenses',
+    targetAmount: 10000,
+    currentAmount: 2500,
+    targetDate: '2024-12-31',
+    category: 'Savings'
   },
   {
-    id: 'task2',
-    status: 'TODO',
-    title: 'Gather requirements from stakeholders'
+    id: 'goal2',
+    status: 'IN_PROGRESS',
+    title: 'Pay Off Credit Card Debt',
+    description: 'Eliminate $5,000 credit card debt',
+    targetAmount: 5000,
+    currentAmount: 3200,
+    targetDate: '2024-06-30',
+    category: 'Debt Reduction'
+  },
+  {
+    id: 'goal3',
+    status: 'ACHIEVED',
+    title: 'Vacation Fund - $3,000',
+    description: 'Save for European vacation',
+    targetAmount: 3000,
+    currentAmount: 3000,
+    targetDate: '2024-03-15',
+    category: 'Travel'
   }
 ];
 
@@ -62,7 +94,7 @@ export const useTaskStore = create<State & Actions>()(
         set((state) => ({
           tasks: [
             ...state.tasks,
-            { id: uuid(), title, description, status: 'TODO' }
+            { id: uuid(), title, description, status: 'PLANNING' }
           ]
         })),
       updateCol: (id: UniqueIdentifier, newName: string) =>

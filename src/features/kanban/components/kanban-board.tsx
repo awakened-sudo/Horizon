@@ -25,16 +25,16 @@ import { TaskCard } from './task-card';
 
 const defaultCols = [
   {
-    id: 'TODO' as const,
-    title: 'Todo'
+    id: 'PLANNING' as const,
+    title: 'Planning'
   },
   {
     id: 'IN_PROGRESS' as const,
-    title: 'In progress'
+    title: 'In Progress'
   },
   {
-    id: 'DONE' as const,
-    title: 'Done'
+    id: 'ACHIEVED' as const,
+    title: 'Achieved'
   }
 ] satisfies Column[];
 
@@ -44,9 +44,9 @@ export function KanbanBoard() {
   // const [columns, setColumns] = useState<Column[]>(defaultCols);
   const columns = useTaskStore((state) => state.columns);
   const setColumns = useTaskStore((state) => state.setCols);
-  const pickedUpTaskColumn = useRef<ColumnId | 'TODO' | 'IN_PROGRESS' | 'DONE'>(
-    'TODO'
-  );
+  const pickedUpTaskColumn = useRef<
+    ColumnId | 'PLANNING' | 'IN_PROGRESS' | 'ACHIEVED'
+  >('PLANNING');
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
   // const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -138,7 +138,7 @@ export function KanbanBoard() {
     },
     onDragEnd({ active, over }) {
       if (!hasDraggableData(active) || !hasDraggableData(over)) {
-        pickedUpTaskColumn.current = 'TODO';
+        pickedUpTaskColumn.current = 'PLANNING';
         return;
       }
       if (
@@ -169,10 +169,10 @@ export function KanbanBoard() {
           tasksInColumn.length
         } in column ${column?.title}`;
       }
-      pickedUpTaskColumn.current = 'TODO';
+      pickedUpTaskColumn.current = 'PLANNING';
     },
     onDragCancel({ active }) {
-      pickedUpTaskColumn.current = 'TODO';
+      pickedUpTaskColumn.current = 'PLANNING';
       if (!hasDraggableData(active)) return;
       return `Dragging ${active.data.current?.type} cancelled.`;
     }
