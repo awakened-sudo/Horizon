@@ -10,42 +10,69 @@ import { ForecastingPanel } from './forecasting-panel';
 export default function DataAnalysisViewPage() {
   return (
     <PageContainer>
-      <div className='space-y-4'>
-        <div className='flex items-start justify-between'>
+      <div className='flex flex-1 flex-col space-y-4'>
+        <div className='flex items-center justify-between space-y-2'>
           <Heading
-            title='Data Analysis'
+            title='Data Analysis '
             description='Upload, analyze, and visualize your financial data with advanced tools'
           />
         </div>
 
-        <Tabs defaultValue='upload' className='space-y-4'>
-          <TabsList className='grid w-full grid-cols-5'>
-            <TabsTrigger value='upload'>Upload</TabsTrigger>
-            <TabsTrigger value='viewer'>Data Viewer</TabsTrigger>
-            <TabsTrigger value='charts'>Charts</TabsTrigger>
-            <TabsTrigger value='formulas'>Formulas</TabsTrigger>
-            <TabsTrigger value='forecast'>Forecast</TabsTrigger>
+        <Tabs defaultValue='upload' className='flex flex-1 flex-col space-y-4'>
+          <TabsList className='grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-5'>
+            <TabsTrigger value='upload' className='flex-1'>
+              📤 Upload
+            </TabsTrigger>
+            <TabsTrigger value='viewer' className='flex-1'>
+              🔍 Data Viewer
+            </TabsTrigger>
+            <TabsTrigger value='charts' className='flex-1'>
+              📈 Charts
+            </TabsTrigger>
+            <TabsTrigger value='formulas' className='flex-1'>
+              🧮 Formulas
+            </TabsTrigger>
+            <TabsTrigger value='forecast' className='flex-1'>
+              🔮 Forecast
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value='upload' className='space-y-4'>
-            <CSVUploader />
-          </TabsContent>
+          <div className='flex flex-1 flex-col'>
+            <TabsContent
+              value='upload'
+              className='flex-1 space-y-4 data-[state=active]:flex data-[state=active]:flex-col'
+            >
+              <CSVUploader />
+            </TabsContent>
 
-          <TabsContent value='viewer' className='space-y-4'>
-            <DataViewer />
-          </TabsContent>
+            <TabsContent
+              value='viewer'
+              className='flex-1 space-y-4 data-[state=active]:flex data-[state=active]:flex-col'
+            >
+              <DataViewer />
+            </TabsContent>
 
-          <TabsContent value='charts' className='space-y-4'>
-            <ChartGenerator />
-          </TabsContent>
+            <TabsContent
+              value='charts'
+              className='flex-1 space-y-4 data-[state=active]:flex data-[state=active]:flex-col'
+            >
+              <ChartGenerator />
+            </TabsContent>
 
-          <TabsContent value='formulas' className='space-y-4'>
-            <FormulaEngine />
-          </TabsContent>
+            <TabsContent
+              value='formulas'
+              className='flex-1 space-y-4 data-[state=active]:flex data-[state=active]:flex-col'
+            >
+              <FormulaEngine />
+            </TabsContent>
 
-          <TabsContent value='forecast' className='space-y-4'>
-            <ForecastingPanel />
-          </TabsContent>
+            <TabsContent
+              value='forecast'
+              className='flex-1 space-y-4 data-[state=active]:flex data-[state=active]:flex-col'
+            >
+              <ForecastingPanel />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </PageContainer>
